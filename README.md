@@ -62,7 +62,7 @@ Just an easier way to transform objects into DynamoDB items
           SS: ['qwerty', 'ytrewq']
         },
         userIds: {
-          SN: [1, 2, 3, 4, 5, 6, 7]
+          SN: ['1', '2', '3', '4', '5', '6', '7']
         }
       }
     */
