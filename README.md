@@ -3,6 +3,7 @@ Just an easier way to transform objects into DynamoDB items
 
     var transform = require('json-schema-dynamo')
 
+    // define the schema based on JSON Schema
     var schema = {
       type: 'object',
       properties: {
@@ -58,3 +59,5 @@ Just an easier way to transform objects into DynamoDB items
     */
 
 Currently it only supports strings, numbers, integers, and bools
+
+Both transforms will also validate your model against your schema as well
