@@ -1,0 +1,27 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/msessions/.nvm/v0.11.13/bin/node',
+1 verbose cli   '/Users/msessions/.nvm/v0.11.13/bin/npm',
+1 verbose cli   'adduser',
+1 verbose cli   'shichongrui' ]
+2 info using npm@1.4.9
+3 info using node@v0.11.13
+4 error Error: canceled
+4 error     at Interface.<anonymous> (/Users/msessions/.nvm/v0.11.13/lib/node_modules/npm/node_modules/read/lib/read.js:66:13)
+4 error     at Interface.EventEmitter.emit (events.js:104:17)
+4 error     at Interface._ttyWrite (readline.js:672:16)
+4 error     at ReadStream.onkeypress (readline.js:101:10)
+4 error     at ReadStream.EventEmitter.emit (events.js:110:17)
+4 error     at emitKey (readline.js:1149:12)
+4 error     at ReadStream.onData (readline.js:892:14)
+4 error     at ReadStream.EventEmitter.emit (events.js:107:17)
+4 error     at readableAddChunk (_stream_readable.js:159:16)
+4 error     at ReadStream.Readable.push (_stream_readable.js:126:10)
+5 error If you need help, you may report this *entire* log,
+5 error including the npm and node versions, at:
+5 error     <http://github.com/npm/npm/issues>
+6 error System Darwin 13.4.0
+7 error command "/Users/msessions/.nvm/v0.11.13/bin/node" "/Users/msessions/.nvm/v0.11.13/bin/npm" "adduser" "shichongrui"
+8 error cwd /Users/msessions/Work/json-schema-dynamo
+9 error node -v v0.11.13
+10 error npm -v 1.4.9
+11 verbose exit [ 1, true ]

@@ -42,7 +42,7 @@ Just an easier way to transform objects into DynamoDB items
       userIds: [1, 2, 3, 4, 5, 6, 7]
     }
 
-    var item = transformers.fromModelToItem(model, schema)
+    var item = transformers.fromModelToDynamoItem(model, schema)
     console.log(item)
     /*
       {
@@ -67,7 +67,7 @@ Just an easier way to transform objects into DynamoDB items
       }
     */
 
-    var newModel = transformers.fromItemToModel(item, schema)
+    var newModel = transformers.fromDynamoItemToModel(item, schema)
     console.log(newModel)
     /*
       {
