@@ -1,6 +1,7 @@
 var transform = require('./')
 
 var schema = {
+  id: 'schema',
   type: 'object',
   properties: {
     id: {
@@ -39,8 +40,8 @@ var model = {
   userIds: [1, 2, 3, 4, 5, 6, 7]
 }
 
-var dynamoItem = transform.fromModelToItem(model, schema)
+var dynamoItem = transform.fromModelToDynamoItem(model, schema)
 console.log(dynamoItem)
 
-var newModel = transform.fromItemToModel(dynamoItem, schema)
+var newModel = transform.fromDynamoItemToModel(dynamoItem, schema)
 console.log(newModel)

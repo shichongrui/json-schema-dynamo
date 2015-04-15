@@ -1,4 +1,4 @@
-var validate = require('jsonschema').validate
+var Validator = require('jsonschema').Validator
 var _ = require('lodash')
 
 var typeMap = {
@@ -36,20 +36,22 @@ exports.fromDynamoItemToModel = function (item, schema) {
     return a[0]
   })
 
-  var valid = validate(model, schema)
+  var v = new Validator()
+  var result = v.validate(model, schema)
 
-  if (!valid) {
-    throw new Error('That item did not transform into a valid model')
+  if (!result.valid) {
+    throw new Error(result.errors)
   }
 
   return model
 }
 
 exports.fromModelToDynamoItem = function (model, schema) {
-  var valid = validate(model, schema)
+  var v = new Validator()
+  var result = v.validate(model, schema)
 
-  if (!valid) {
-    throw new Error('That model doesn\'t validate against that schema')
+  if (!result.valid) {
+    throw new Error(result.errors)
   }
 
   return _.omit(_.mapValues(schema.properties, function(value, key) {

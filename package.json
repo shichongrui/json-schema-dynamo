@@ -5,8 +5,14 @@
   "main": "index.js",
   "author": "Matthew Sessions",
   "license": "MIT",
+  "scripts": {
+    "test": "mocha "
+  },
   "dependencies": {
     "jsonschema": "1.0.1",
     "lodash": "3.6.0"
+  },
+  "devDependencies": {
+    "mocha": "2.2.4"
   }
 }
