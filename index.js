@@ -5,7 +5,9 @@ var typeMap = {
   'string': 'S',
   'integer': 'N',
   'number': 'N',
-  'boolean': 'B'
+  'boolean': 'B',
+  'array-string': 'SS',
+  'array-number': 'SN'
 }
 
 var stringTo = {
@@ -17,6 +19,12 @@ var stringTo = {
   },
   'B': function (value) {
     return Boolean(value)
+  },
+  'SS': function (value) {
+    return value.map(this.S)
+  },
+  'SN': function (value) {
+    return value.map(this.N)
   }
 }
 
@@ -49,8 +57,11 @@ exports.fromModelToItem = function (model, schema) {
       return null
     }
 
+    var type = (value.type === 'array') ? 'array-' + value.items.type : value.type
+    var itemValue = (Array.isArray(model[key])) ? model[key].map(String) : String(model[key])
+
     var item = {}
-    item[typeMap[value.type]] = model[key]
+    item[typeMap[type]] = itemValue
     return item
   }), _.isNull)
 }

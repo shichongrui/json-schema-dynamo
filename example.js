@@ -14,6 +14,18 @@ var schema = {
     },
     active: {
       type: 'boolean'
+    },
+    types: {
+      type: 'array',
+      items: {
+        type: 'string'
+      }
+    },
+    userIds: {
+      type: 'array',
+      items: {
+        type: 'number'
+      }
     }
   }
 }
@@ -21,7 +33,10 @@ var schema = {
 var model = {
   id: 'asdf',
   createDate: 1928383,
-  name: 'asdffdas'
+  name: 'asdffdas',
+  active: true,
+  types: ['qwerty', 'ytrewq'],
+  userIds: [1, 2, 3, 4, 5, 6, 7]
 }
 
 var item = transform.fromModelToItem(model, schema)
