@@ -1,4 +1,4 @@
-var transform = require('./')
+var transformers = require('./')
 
 var schema = {
   id: 'schema',
@@ -40,8 +40,8 @@ var model = {
   userIds: [1, 2, 3, 4, 5, 6, 7]
 }
 
-var dynamoItem = transform.fromModelToDynamoItem(model, schema)
+var dynamoItem = transformers.fromModelToDynamoItem(model, schema)
 console.log(dynamoItem)
 
-var newModel = transform.fromDynamoItemToModel(dynamoItem, schema)
+var newModel = transformers.fromDynamoItemToModel(dynamoItem, schema)
 console.log(newModel)

@@ -1,7 +1,7 @@
 #json-schema-dynamo#
 Just an easier way to transform objects into DynamoDB items
 
-    var transform = require('json-schema-dynamo')
+    var transformers = require('json-schema-dynamo')
 
     var schema = {
       type: 'object',
@@ -42,7 +42,7 @@ Just an easier way to transform objects into DynamoDB items
       userIds: [1, 2, 3, 4, 5, 6, 7]
     }
 
-    var item = transform.fromModelToItem(model, schema)
+    var item = transformers.fromModelToItem(model, schema)
     console.log(item)
     /*
       {
@@ -67,7 +67,7 @@ Just an easier way to transform objects into DynamoDB items
       }
     */
 
-    var newModel = transform.fromItemToModel(item, schema)
+    var newModel = transformers.fromItemToModel(item, schema)
     console.log(newModel)
     /*
       {
