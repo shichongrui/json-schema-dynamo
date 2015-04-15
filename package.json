@@ -1,12 +1,16 @@
 {
   "name": "json-schema-dynamo",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Transform objects based on their JSON Schema definition back and forth between DynamoDB items",
   "main": "index.js",
   "author": "Matthew Sessions",
   "license": "MIT",
   "scripts": {
     "test": "mocha "
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uniflow/uniflow.git"
   },
   "dependencies": {
     "jsonschema": "1.0.1",
