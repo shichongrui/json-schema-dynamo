@@ -21,8 +21,7 @@ var schema = {
 var model = {
   id: 'asdf',
   createDate: 1928383,
-  name: 'asdffdas',
-  active: true
+  name: 'asdffdas'
 }
 
 var item = transform.fromModelToItem(model, schema)

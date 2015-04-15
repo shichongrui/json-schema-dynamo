@@ -1,5 +1,5 @@
 var validate = require('jsonschema').validate
-var mapValues = require('lodash').mapValues
+var _ = require('lodash')
 
 var typeMap = {
   'string': 'S',
@@ -21,7 +21,7 @@ var stringTo = {
 }
 
 exports.fromItemToModel = function (item, schema) {
-  var model = mapValues(item, function (value, key) {
+  var model = _.mapValues(item, function (value, key) {
     var a = Object.keys(value).map(function(type) {
       return stringTo[type](value[type])
     })
@@ -44,11 +44,15 @@ exports.fromModelToItem = function (model, schema) {
     throw new Error('That model doesn\'t validate against that schema')
   }
 
-  return mapValues(schema.properties, function(value, key) {
+  return _.omit(_.mapValues(schema.properties, function(value, key) {
+    if (!model[key]) {
+      return null
+    }
+
     var item = {}
     item[typeMap[value.type]] = model[key]
     return item
-  })
+  }), _.isNull)
 }
 
 
