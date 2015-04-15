@@ -3,7 +3,6 @@ Just an easier way to transform objects into DynamoDB items
 
     var transform = require('json-schema-dynamo')
 
-    // define the schema based on JSON Schema
     var schema = {
       type: 'object',
       properties: {
@@ -18,6 +17,18 @@ Just an easier way to transform objects into DynamoDB items
         },
         active: {
           type: 'boolean'
+        },
+        types: {
+          type: 'array',
+          items: {
+            type: 'string'
+          }
+        },
+        userIds: {
+          type: 'array',
+          items: {
+            type: 'number'
+          }
         }
       }
     }
@@ -26,13 +37,15 @@ Just an easier way to transform objects into DynamoDB items
       id: 'asdf',
       createDate: 1928383,
       name: 'asdffdas',
-      active: true
+      active: true,
+      types: ['qwerty', 'ytrewq'],
+      userIds: [1, 2, 3, 4, 5, 6, 7]
     }
 
     var item = transform.fromModelToItem(model, schema)
-
+    console.log(item)
     /*
-      item = {
+      {
         id: {
           S: 'asdf'
         },
@@ -44,20 +57,30 @@ Just an easier way to transform objects into DynamoDB items
         },
         active: {
           B: 'true'
+        },
+        types: {
+          SS: ['qwerty', 'ytrewq']
+        },
+        userIds: {
+          SN: [1, 2, 3, 4, 5, 6, 7]
         }
       }
     */
 
     var newModel = transform.fromItemToModel(item, schema)
-
-    /* model = {
+    console.log(newModel)
+    /*
+      {
         id: 'asdf',
         createDate: 1928383,
         name: 'asdffdas',
-        active: true
+        active: true,
+        types: ['qwerty', 'ytrewq'],
+        userIds: [1, 2, 3, 4, 5, 6, 7]
       }
     */
 
-Currently it only supports strings, numbers, integers, and bools
+
+Currently it supports: string, number, integer, boolean, array of strings, and array of numbers
 
 Both transforms will also validate your model against your schema as well

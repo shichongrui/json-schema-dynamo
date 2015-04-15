@@ -39,31 +39,8 @@ var model = {
   userIds: [1, 2, 3, 4, 5, 6, 7]
 }
 
-var item = transform.fromModelToItem(model, schema)
-console.log(item)
-/*
-  {
-    id: {
-      S: 'asdf'
-    },
-    createDate: {
-      N: '1928383'
-    },
-    name: {
-      S: 'asdffdas'
-    },
-    active: {
-      B: 'true'
-    }
-  }
-*/
+var dynamoItem = transform.fromModelToItem(model, schema)
+console.log(dynamoItem)
 
-var newModel = transform.fromItemToModel(item, schema)
+var newModel = transform.fromItemToModel(dynamoItem, schema)
 console.log(newModel)
-/* {
-    id: 'asdf',
-    createDate: 1928383,
-    name: 'asdffdas',
-    active: true
-  }
-*/

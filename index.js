@@ -28,7 +28,7 @@ var stringTo = {
   }
 }
 
-exports.fromItemToModel = function (item, schema) {
+exports.fromDynamoItemToModel = function (item, schema) {
   var model = _.mapValues(item, function (value, key) {
     var a = Object.keys(value).map(function(type) {
       return stringTo[type](value[type])
@@ -45,7 +45,7 @@ exports.fromItemToModel = function (item, schema) {
   return model
 }
 
-exports.fromModelToItem = function (model, schema) {
+exports.fromModelToDynamoItem = function (model, schema) {
   var valid = validate(model, schema)
 
   if (!valid) {
