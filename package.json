@@ -1,6 +1,6 @@
 {
   "name": "json-schema-dynamo",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Transform objects based on their JSON Schema definition back and forth between DynamoDB items",
   "main": "index.js",
   "author": "Matthew Sessions",
