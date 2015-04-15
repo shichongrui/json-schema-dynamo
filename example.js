@@ -26,9 +26,9 @@ var model = {
 }
 
 var item = transform.fromModelToItem(model, schema)
-
+console.log(item)
 /*
-  item = {
+  {
     id: {
       S: 'asdf'
     },
@@ -45,8 +45,8 @@ var item = transform.fromModelToItem(model, schema)
 */
 
 var newModel = transform.fromItemToModel(item, schema)
-
-/* model = {
+console.log(newModel)
+/* {
     id: 'asdf',
     createDate: 1928383,
     name: 'asdffdas',

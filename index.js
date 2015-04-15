@@ -44,9 +44,9 @@ exports.fromModelToItem = function (model, schema) {
     throw new Error('That model doesn\'t validate against that schema')
   }
 
-  return mapValues(model, function(value, key) {
+  return mapValues(schema.properties, function(value, key) {
     var item = {}
-    item[typeMap[schema.properties[key].type]] = String(value)
+    item[typeMap[value.type]] = model[key]
     return item
   })
 }
