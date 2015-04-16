@@ -44,7 +44,7 @@ describe('fromDynamoItemToModel', function () {
           S: 'a string'
         }
       }
-      var model = transformer.fromDynamoItemToModel(item, schema)
+      var model = transformer.fromDynamoItemToModel(schema, item)
       assert(model.string === item.string.S)
     })
 
@@ -55,7 +55,7 @@ describe('fromDynamoItemToModel', function () {
         }
       }
 
-      var model = transformer.fromDynamoItemToModel(item, schema)
+      var model = transformer.fromDynamoItemToModel(schema, item)
       assert(model.number === parseInt(item.number.N, 10))
     })
 
@@ -66,7 +66,7 @@ describe('fromDynamoItemToModel', function () {
         }
       }
 
-      var model = transformer.fromDynamoItemToModel(item, schema)
+      var model = transformer.fromDynamoItemToModel(schema, item)
       assert(model.boolean === Boolean(item.boolean.B))
     })
 
@@ -77,7 +77,7 @@ describe('fromDynamoItemToModel', function () {
         }
       }
 
-      var model = transformer.fromDynamoItemToModel(item, schema)
+      var model = transformer.fromDynamoItemToModel(schema, item)
       assert(model.arrayString[0] === item.arrayString.SS[0])
       assert(model.arrayString[1] === item.arrayString.SS[1])
     })
@@ -89,7 +89,7 @@ describe('fromDynamoItemToModel', function () {
         }
       }
 
-      var model = transformer.fromDynamoItemToModel(item, schema)
+      var model = transformer.fromDynamoItemToModel(schema, item)
       assert(model.arrayNumber[0] === parseInt(item.arrayNumber.SN[0], 10))
       assert(model.arrayNumber[1] === parseInt(item.arrayNumber.SN[1], 10))
     })

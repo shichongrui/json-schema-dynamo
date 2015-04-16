@@ -40,8 +40,8 @@ var model = {
   userIds: [1, 2, 3, 4, 5, 6, 7]
 }
 
-var dynamoItem = transformers.fromModelToDynamoItem(model, schema)
+var dynamoItem = transformers.fromModelToDynamoItem(schema, model)
 console.log(dynamoItem)
 
-var newModel = transformers.fromDynamoItemToModel(dynamoItem, schema)
+var newModel = transformers.fromDynamoItemToModel(schema, dynamoItem)
 console.log(newModel)

@@ -26,7 +26,7 @@ describe('fromModelToDynamoItem', function() {
       model.prop = 1234
 
       assert.throws(function () {
-        transformer.fromModelToDynamoItem(model, schema)
+        transformer.fromModelToDynamoItem(schema, model)
       })
     })
 
@@ -35,7 +35,7 @@ describe('fromModelToDynamoItem', function() {
       schema.required = ['prop']
 
       assert.throws(function () {
-        transformer.fromModelToDynamoItem(model, schema)
+        transformer.fromModelToDynamoItem(schema, model)
       })
     })
 
@@ -45,7 +45,7 @@ describe('fromModelToDynamoItem', function() {
       }
 
       assert.doesNotThrow(function() {
-        transformer.fromModelToDynamoItem(model, schema)
+        transformer.fromModelToDynamoItem(schema, model)
       })
     })
 
@@ -53,7 +53,7 @@ describe('fromModelToDynamoItem', function() {
       model.anotherProp = 99999
 
       assert.doesNotThrow(function() {
-        transformer.fromModelToDynamoItem(model, schema)
+        transformer.fromModelToDynamoItem(schema, model)
       })
     })
 
@@ -83,14 +83,14 @@ describe('fromModelToDynamoItem', function() {
         type: 'number'
       }
 
-      var item = transformer.fromModelToDynamoItem(model, schema)
+      var item = transformer.fromModelToDynamoItem(schema, model)
       assert(!item.hasOwnProperty('anotherProp'))
     })
 
     it('attributes that arent in the schema', function () {
       model.anotherProp = 99999
 
-      var item = transformer.fromModelToDynamoItem(model, schema)
+      var item = transformer.fromModelToDynamoItem(schema, model)
       assert(!item.hasOwnProperty('anotherProp'))
     })
   })
@@ -134,7 +134,7 @@ describe('fromModelToDynamoItem', function() {
       var model = {
         string: 'a string'
       }
-      var item = transformer.fromModelToDynamoItem(model, schema)
+      var item = transformer.fromModelToDynamoItem(schema, model)
       assert(item.string.S === model.string)
     })
 
@@ -142,7 +142,7 @@ describe('fromModelToDynamoItem', function() {
       var model = {
         number: 1234.1234
       }
-      var item = transformer.fromModelToDynamoItem(model, schema)
+      var item = transformer.fromModelToDynamoItem(schema, model)
       assert(item.number.N === String(model.number))
     })
 
@@ -150,7 +150,7 @@ describe('fromModelToDynamoItem', function() {
       var model = {
         integer: 1234
       }
-      var item = transformer.fromModelToDynamoItem(model, schema)
+      var item = transformer.fromModelToDynamoItem(schema, model)
       assert(item.integer.N === String(model.integer))
     })
 
@@ -158,7 +158,7 @@ describe('fromModelToDynamoItem', function() {
       var model = {
         boolean: true
       }
-      var item = transformer.fromModelToDynamoItem(model, schema)
+      var item = transformer.fromModelToDynamoItem(schema, model)
       assert(item.boolean.B === String(model.boolean))
     })
 
@@ -166,7 +166,7 @@ describe('fromModelToDynamoItem', function() {
       var model = {
         arrayString: ['asdf', 'fdas']
       }
-      var item = transformer.fromModelToDynamoItem(model, schema)
+      var item = transformer.fromModelToDynamoItem(schema, model)
       assert(item.arrayString.SS[0] === model.arrayString[0])
       assert(item.arrayString.SS[1] === model.arrayString[1])
     })
@@ -175,7 +175,7 @@ describe('fromModelToDynamoItem', function() {
       var model = {
         arrayNumber: [10, 20]
       }
-      var item = transformer.fromModelToDynamoItem(model, schema)
+      var item = transformer.fromModelToDynamoItem(schema, model)
       assert(item.arrayNumber.SN[0] === String(model.arrayNumber[0]))
       assert(item.arrayNumber.SN[1] === String(model.arrayNumber[1]))
     })

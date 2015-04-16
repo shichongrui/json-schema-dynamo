@@ -49,7 +49,7 @@ var stringTo = {
   }
 }
 
-exports.fromDynamoItemToModel = function (item, schema) {
+exports.fromDynamoItemToModel = function (schema, item) {
   var model = _.mapValues(item, function (value, key) {
     var a = Object.keys(value).map(function (type) {
       return stringTo[type](value[type])
@@ -67,7 +67,7 @@ exports.fromDynamoItemToModel = function (item, schema) {
   return model
 }
 
-exports.fromModelToDynamoItem = function (model, schema) {
+exports.fromModelToDynamoItem = function (schema, model) {
   var v = new Validator()
   var result = v.validate(model, schema)
 
