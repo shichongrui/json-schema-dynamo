@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/uniflow/uniflow.git"
+    "url": "https://github.com/shichongrui/json-schema-dynamo.git"
   },
   "dependencies": {
     "jsonschema": "1.0.1",
