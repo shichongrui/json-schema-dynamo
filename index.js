@@ -1,23 +1,14 @@
 var Validator = require('jsonschema').Validator
 var _ = require('lodash')
 
-var typeMap = {
-  'string': 'S',
-  'integer': 'N',
-  'number': 'N',
-  'boolean': 'B',
-  'array-string': 'SS',
-  'array-number': 'SN'
-}
-
-var stringTo = {
-  'S': function (value) {
+var toModel = {
+  S: function (value) {
     return value
   },
-  'N': function (value) {
-    return parseInt(value, 10)
+  N: function (value) {
+    return +value
   },
-  'B': function (value) {
+  BOOL: function (value) {
     switch (value) {
     case true:
     case 'true':
@@ -25,37 +16,33 @@ var stringTo = {
     case '1':
     case 'on':
     case 'yes':
-      value = true;
-      break;
-    case false:
-    case 'false':
-    case 0:
-    case '0':
-    case 'off':
-    case 'no':
-      value = false;
-      break;
+      return true
     default:
-      value = false
-      break;
+      return false
     }
-    return value;
   },
-  'SS': function (value) {
-    return value.map(this.S)
+  L: function (value) {
+    return value.map(function (value) {
+      var type = Object.keys(value)[0]
+      return toModel[type](value[type])
+    })
   },
-  'SN': function (value) {
-    return value.map(this.N)
+  M: function (value) {
+    return _.mapValues(value, function (value) {
+      var type = Object.keys(value)[0]
+      return toModel[type](value[type])
+    })
+  },
+  SS: function (value) {
+    return value.map(toModel.S)
+  },
+  NS: function (value) {
+    return value.map(toModel.N)
   }
 }
 
 exports.fromDynamoItemToModel = function (schema, item) {
-  var model = _.mapValues(item, function (value, key) {
-    var a = Object.keys(value).map(function (type) {
-      return stringTo[type](value[type])
-    })
-    return a[0]
-  })
+  var model = toModel.M(item)
 
   var v = new Validator()
   var result = v.validate(model, schema)
@@ -67,6 +54,65 @@ exports.fromDynamoItemToModel = function (schema, item) {
   return model
 }
 
+var toItem = {
+  string: function (schema, value) {
+    return { S: String(value) }
+  },
+  number: function (schema, value) {
+    return { N: String(+value) }
+  },
+  'boolean': function (schema, value) {
+    return { BOOL: String(value) }
+  },
+  array: function (schema, value) {
+    if (!Array.isArray(value)) { return null }
+
+    var isNum = (schema.items && (
+      schema.items.type === 'number' || schema.items.type === 'integer')
+    )
+    if (isNum) {
+      return { NS: value.map(String) }
+    }
+
+    var isStr = (schema.items && schema.items.type === 'string')
+    if (isStr) {
+      return { SS: value.map(String) }
+    }
+
+    return { L: value.map(toItem.any.bind(toItem, schema.items)) }
+  },
+  object: function (schema, value) {
+    if (typeof value !== 'object') { return null }
+
+    var model = {}
+    var properties = schema.properties
+    Object.keys(properties).forEach(function (name) {
+      var subvalue = toItem.any(properties[name], value[name])
+      if (subvalue != null) { model[name] = subvalue }
+    })
+    return { M: model }
+  },
+  any: function (schema, value) {
+    if (value == null) { return null }
+    switch (schema.type) {
+    case 'string':
+      return toItem.string(schema, value)
+    case 'integer':
+    case 'number':
+      return toItem.number(schema, value)
+    case 'boolean':
+      return toItem['boolean'](schema, value)
+    case 'array':
+      return toItem.array(schema, value)
+    case 'object':
+      return toItem.object(schema, value)
+    default:
+      break;
+    }
+    return null // couldn't determine a type
+  }
+}
+
 exports.fromModelToDynamoItem = function (schema, model) {
   var v = new Validator()
   var result = v.validate(model, schema)
@@ -75,16 +121,5 @@ exports.fromModelToDynamoItem = function (schema, model) {
     throw new Error(result.errors)
   }
 
-  return _.omit(_.mapValues(schema.properties, function (value, key) {
-    if (!model[key]) {
-      return null
-    }
-
-    var type = (value.type === 'array') ? 'array-' + value.items.type : value.type
-    var itemValue = (Array.isArray(model[key])) ? model[key].map(String) : String(model[key])
-
-    var item = {}
-    item[typeMap[type]] = itemValue
-    return item
-  }), _.isNull)
+  return toItem.object(schema, model).M
 }

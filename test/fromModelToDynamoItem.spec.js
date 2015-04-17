@@ -125,6 +125,25 @@ describe('fromModelToDynamoItem', function() {
             items: {
               type: 'number'
             }
+          },
+          arrayObject: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                string: {
+                  type: 'string'
+                }
+              }
+            }
+          },
+          nestedObject: {
+            type: 'object',
+            properties: {
+              number: {
+                type: 'number'
+              }
+            }
           }
         }
       }
@@ -159,7 +178,7 @@ describe('fromModelToDynamoItem', function() {
         boolean: true
       }
       var item = transformer.fromModelToDynamoItem(schema, model)
-      assert(item.boolean.B === String(model.boolean))
+      assert(item.boolean.BOOL === String(model.boolean))
     })
 
     it('array of strings', function () {
@@ -176,8 +195,25 @@ describe('fromModelToDynamoItem', function() {
         arrayNumber: [10, 20]
       }
       var item = transformer.fromModelToDynamoItem(schema, model)
-      assert(item.arrayNumber.SN[0] === String(model.arrayNumber[0]))
-      assert(item.arrayNumber.SN[1] === String(model.arrayNumber[1]))
+      assert(item.arrayNumber.NS[0] === String(model.arrayNumber[0]))
+      assert(item.arrayNumber.NS[1] === String(model.arrayNumber[1]))
+    })
+
+    it('array of objects', function () {
+      var model = {
+        arrayObject: [ { string: 'a' }, { string: 'b' } ]
+      }
+      var item = transformer.fromModelToDynamoItem(schema, model)
+      assert(item.arrayObject.L[0].M.string.S === model.arrayObject[0].string)
+      assert(item.arrayObject.L[1].M.string.S === model.arrayObject[1].string)
+    })
+
+    it('nested object', function () {
+      var model = {
+        nestedObject: { number: 42 }
+      }
+      var item = transformer.fromModelToDynamoItem(schema, model)
+      assert(item.nestedObject.M.number.N === String(model.nestedObject.number))
     })
   })
 

@@ -33,6 +33,32 @@ describe('fromDynamoItemToModel', function () {
             items: {
               type: 'number'
             }
+          },
+          arrayObject: {
+            type: 'array',
+            items: {
+              anyOf: [
+                {
+                  type: 'number'
+                },
+                {
+                  type: 'object',
+                  properties: {
+                    string: {
+                      type: 'string'
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          nestedObject: {
+            type: 'object',
+            properties: {
+              number: {
+                type: 'number'
+              }
+            }
           }
         }
       }
@@ -51,23 +77,27 @@ describe('fromDynamoItemToModel', function () {
     it('N', function () {
       var item = {
         number: {
+          N: '12.34'
+        },
+        integer: {
           N: '1234'
         }
       }
 
       var model = transformer.fromDynamoItemToModel(schema, item)
-      assert(model.number === parseInt(item.number.N, 10))
+      assert(model.number === parseFloat(item.number.N))
+      assert(model.integer === parseInt(item.integer.N, 10))
     })
 
-    it('B', function () {
+    it('BOOL', function () {
       var item = {
         boolean: {
-          B: 'true'
+          BOOL: 'true'
         }
       }
 
       var model = transformer.fromDynamoItemToModel(schema, item)
-      assert(model.boolean === Boolean(item.boolean.B))
+      assert(model.boolean === Boolean(item.boolean.BOOL))
     })
 
     it('SS', function () {
@@ -82,16 +112,42 @@ describe('fromDynamoItemToModel', function () {
       assert(model.arrayString[1] === item.arrayString.SS[1])
     })
 
-    it('SN', function () {
+    it('NS', function () {
       var item = {
         arrayNumber: {
-          SN: ['10', '20']
+          NS: ['10', '20']
         }
       }
 
       var model = transformer.fromDynamoItemToModel(schema, item)
-      assert(model.arrayNumber[0] === parseInt(item.arrayNumber.SN[0], 10))
-      assert(model.arrayNumber[1] === parseInt(item.arrayNumber.SN[1], 10))
+      assert(model.arrayNumber[0] === parseInt(item.arrayNumber.NS[0], 10))
+      assert(model.arrayNumber[1] === parseInt(item.arrayNumber.NS[1], 10))
+    })
+
+    it('L', function () {
+      var item = {
+        arrayObject: {
+          L: [
+            { M: { string: { S: 'ewr' } } },
+            { M: { string: { S: 'wqe' } } }
+          ]
+        }
+      }
+
+      var model = transformer.fromDynamoItemToModel(schema, item)
+      assert(model.arrayObject[0].string === item.arrayObject.L[0].M.string.S)
+      assert(model.arrayObject[1].string === item.arrayObject.L[1].M.string.S)
+    })
+
+    it('M', function () {
+      var item = {
+        nestedObject: {
+          M: { number: { N: '7' } }
+        }
+      }
+
+      var model = transformer.fromDynamoItemToModel(schema, item)
+      assert(model.nestedObject.number === parseInt(item.nestedObject.M.number.N, 10))
     })
   })
 
