@@ -81,6 +81,6 @@ Just an easier way to transform objects into DynamoDB items
     */
 
 
-Currently it supports: string, number, integer, boolean, array of strings, and array of numbers
+Currently it supports: string, number, integer, boolean, array of strings, array of numbers, and lists
 
 Both transforms will also validate your model against your schema as well
