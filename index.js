@@ -62,7 +62,7 @@ var toItem = {
     return { N: String(+value) }
   },
   'boolean': function (schema, value) {
-    return { BOOL: String(value) }
+    return { BOOL: value }
   },
   array: function (schema, value) {
     if (!Array.isArray(value)) { return null }
