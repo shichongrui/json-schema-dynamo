@@ -178,7 +178,7 @@ describe('fromModelToDynamoItem', function() {
         boolean: true
       }
       var item = transformer.fromModelToDynamoItem(schema, model)
-      assert(item.boolean.BOOL === String(model.boolean))
+      assert(item.boolean.BOOL === model.boolean)
     })
 
     it('array of strings', function () {
