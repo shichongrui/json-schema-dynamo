@@ -6,7 +6,7 @@ var toModel = {
     return value
   },
   N: function (value, itemSchema) {
-    if (itemSchema.type === 'date') {
+    if (itemSchema && itemSchema.type === 'date') {
       return new Date(+value)
     }
     return +value
