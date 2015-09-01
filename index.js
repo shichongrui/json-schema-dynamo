@@ -24,10 +24,10 @@ var toModel = {
       return false
     }
   },
-  L: function (value) {
+  L: function (value, schema) {
     return value.map(function (value) {
       var type = Object.keys(value)[0]
-      return toModel[type](value[type])
+      return toModel[type](value[type], schema.items)
     })
   },
   M: function (value, schema) {
