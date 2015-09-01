@@ -37,7 +37,7 @@ describe('fromDynamoItemToModel', function () {
               type: 'number'
             }
           },
-          arrayDates: {
+          arrayDate: {
             type: 'array',
             items: {
               type: 'date'
@@ -145,13 +145,13 @@ describe('fromDynamoItemToModel', function () {
 
     it('NS of dates', function () {
       var item = {
-        arrayDates: {
+        arrayDate: {
           NS: ['1441127720385', '1441127720385']
         }
       }
       var model = transformer.fromDynamoItemToModel(schema, item)
-      assert(String(+model.arrayDates[0]) === item.arrayDates.NS[0])
-      assert(String(+model.arrayDates[1]) === item.arrayDates.NS[1])
+      assert(String(+model.arrayDate[0]) === item.arrayDate.NS[0])
+      assert(String(+model.arrayDate[1]) === item.arrayDate.NS[1])
     })
 
     it('L', function () {
