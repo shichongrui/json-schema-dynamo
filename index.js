@@ -5,7 +5,10 @@ var toModel = {
   S: function (value) {
     return value
   },
-  N: function (value) {
+  N: function (value, itemSchema) {
+    if (itemSchema.type === 'date') {
+      return new Date(+value)
+    }
     return +value
   },
   BOOL: function (value) {
@@ -27,22 +30,25 @@ var toModel = {
       return toModel[type](value[type])
     })
   },
-  M: function (value) {
-    return _.mapValues(value, function (value) {
+  M: function (value, schema) {
+    return _.mapValues(value, function (value, key) {
       var type = Object.keys(value)[0]
-      return toModel[type](value[type])
+      var itemSchema = schema && schema.properties && schema.properties[key]
+      return toModel[type](value[type], itemSchema)
     })
   },
   SS: function (value) {
     return value.map(toModel.S)
   },
-  NS: function (value) {
-    return value.map(toModel.N)
+  NS: function (value, schema) {
+    return value.map(function (num) {
+      return toModel.N(num, schema.items)
+    })
   }
 }
 
 exports.fromDynamoItemToModel = function (schema, item) {
-  var model = toModel.M(item)
+  var model = toModel.M(item, schema)
 
   var v = new Validator()
   var result = v.validate(model, schema)
@@ -61,11 +67,19 @@ var toItem = {
   number: function (schema, value) {
     return { N: String(+value) }
   },
-  'boolean': function (schema, value) {
+  boolean: function (schema, value) {
     return { BOOL: value }
+  },
+  date: function (schema, value) {
+    return { N: String(+value) }
   },
   array: function (schema, value) {
     if (!Array.isArray(value)) { return null }
+
+    var isDate = schema.items && schema.items.type === 'date'
+    if (isDate) {
+      return { NS: value.map(function(date) { return String(+date) })}
+    }
 
     var isNum = (schema.items && (
       schema.items.type === 'number' || schema.items.type === 'integer')
@@ -100,6 +114,8 @@ var toItem = {
     case 'integer':
     case 'number':
       return toItem.number(schema, value)
+    case 'date':
+      return toItem.date(schema, value)
     case 'boolean':
       return toItem['boolean'](schema, value)
     case 'array':

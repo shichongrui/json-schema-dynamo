@@ -22,6 +22,9 @@ describe('fromDynamoItemToModel', function () {
           boolean: {
             type: 'boolean'
           },
+          date: {
+            type: 'date'
+          },
           arrayString: {
             type: 'array',
             items: {
@@ -32,6 +35,12 @@ describe('fromDynamoItemToModel', function () {
             type: 'array',
             items: {
               type: 'number'
+            }
+          },
+          arrayDate: {
+            type: 'array',
+            items: {
+              type: 'date'
             }
           },
           arrayObject: {
@@ -89,6 +98,16 @@ describe('fromDynamoItemToModel', function () {
       assert(model.integer === parseInt(item.integer.N, 10))
     })
 
+    it('N that is a date', function () {
+      var item = {
+        date: {
+          N: +Date.now()
+        }
+      }
+      var model = transformer.fromDynamoItemToModel(schema, item)
+      assert(+model.date === parseInt(item.date.N, 10))
+    })
+
     it('BOOL', function () {
       var item = {
         boolean: {
@@ -122,6 +141,17 @@ describe('fromDynamoItemToModel', function () {
       var model = transformer.fromDynamoItemToModel(schema, item)
       assert(model.arrayNumber[0] === parseInt(item.arrayNumber.NS[0], 10))
       assert(model.arrayNumber[1] === parseInt(item.arrayNumber.NS[1], 10))
+    })
+
+    it('NS of dates', function () {
+      var item = {
+        arrayDate: {
+          NS: ['1441127720385', '1441127720385']
+        }
+      }
+      var model = transformer.fromDynamoItemToModel(schema, item)
+      assert(String(+model.arrayDate[0]) === item.arrayDate.NS[0])
+      assert(String(+model.arrayDate[1]) === item.arrayDate.NS[1])
     })
 
     it('L', function () {

@@ -10,13 +10,16 @@ Just an easier way to transform objects into DynamoDB items
           type: 'string'
         },
         createDate: {
-          type: 'number'
+          type: 'date'
         },
         name: {
           type: 'string'
         },
         active: {
           type: 'boolean'
+        },
+        likes: {
+          type: 'number'
         },
         types: {
           type: 'array',
@@ -35,8 +38,9 @@ Just an easier way to transform objects into DynamoDB items
 
     var model = {
       id: 'asdf',
-      createDate: 1928383,
+      createDate: new Date(),
       name: 'asdffdas',
+      likes: 1,
       active: true,
       types: ['qwerty', 'ytrewq'],
       userIds: [1, 2, 3, 4, 5, 6, 7]
@@ -55,6 +59,9 @@ Just an easier way to transform objects into DynamoDB items
         name: {
           S: 'asdffdas'
         },
+        likes: {
+          N: '1'
+        },
         active: {
           B: 'true'
         },
@@ -72,9 +79,10 @@ Just an easier way to transform objects into DynamoDB items
     /*
       {
         id: 'asdf',
-        createDate: 1928383,
+        createDate: <Date>,
         name: 'asdffdas',
         active: true,
+        likes: 1
         types: ['qwerty', 'ytrewq'],
         userIds: [1, 2, 3, 4, 5, 6, 7]
       }
@@ -82,5 +90,7 @@ Just an easier way to transform objects into DynamoDB items
 
 
 Currently it supports: string, number, integer, boolean, array of strings, array of numbers, and lists
+
+There is also custom support for dates. You can define an attribute as a date type which will be transformed into an `N` in Dynamo and then back into a date when retrieved.
 
 Both transforms will also validate your model against your schema as well
