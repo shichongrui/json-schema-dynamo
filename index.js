@@ -45,8 +45,8 @@ var toModel = {
       return toModel.N(num, schema.items)
     })
   },
-  NULL: function(value, schema) {
-    return null;
+  NULL: function() {
+    return null
   }
 }
 
