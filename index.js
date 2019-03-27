@@ -44,6 +44,9 @@ var toModel = {
     return value.map(function (num) {
       return toModel.N(num, schema.items)
     })
+  },
+  NULL: function(value, schema) {
+    return null;
   }
 }
 
