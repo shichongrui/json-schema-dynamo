@@ -179,6 +179,17 @@ describe('fromDynamoItemToModel', function () {
       var model = transformer.fromDynamoItemToModel(schema, item)
       assert(model.nestedObject.number === parseInt(item.nestedObject.M.number.N, 10))
     })
+
+    it('NULL', function () {
+      var item = {
+        nullProperty: {
+          NULL: true
+        }
+      }
+
+      var model = transformer.fromDynamoItemToModel(schema, item)
+      assert(model.nullProperty === null)
+    })
   })
 
 })
