@@ -1,5 +1,5 @@
 var assert = require('assert')
-var transformer = require('../')
+var transformer = require('..')
 
 describe('fromDynamoItemToModel', function () {
 

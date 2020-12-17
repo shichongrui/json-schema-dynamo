@@ -1,5 +1,8 @@
-#json-schema-dynamo#
-Just an easier way to transform objects into DynamoDB items
+# `json-schema-dynamo`
+
+If you are able to, please consider using the `DocumentClient` in the `AWS.DynamoDB` SDK as it makes this package mostly unnecessary.
+
+An easier way to transform objects into DynamoDB items
 
     var transformers = require('json-schema-dynamo')
 

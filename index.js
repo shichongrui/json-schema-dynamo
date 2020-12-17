@@ -31,11 +31,12 @@ var toModel = {
     })
   },
   M: function (value, schema) {
-    return _.mapValues(value, function (value, key) {
-      var type = Object.keys(value)[0]
+    return Object.keys(value).reduce((acc, key) => {
+      var type = Object.keys(value[key])[0]
       var itemSchema = schema && schema.properties && schema.properties[key]
-      return toModel[type](value[type], itemSchema)
-    })
+      acc[key] = toModel[type](value[key][type], itemSchema)
+      return acc
+    }, {})
   },
   SS: function (value) {
     return value.map(toModel.S)

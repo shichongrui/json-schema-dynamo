@@ -1,22 +1,21 @@
 {
   "name": "json-schema-dynamo",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Transform objects based on their JSON Schema definition back and forth between DynamoDB items",
   "main": "index.js",
   "author": "Matthew Sessions",
   "license": "MIT",
   "scripts": {
-    "test": "mocha "
+    "test": "jest"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/shichongrui/json-schema-dynamo.git"
   },
   "dependencies": {
-    "jsonschema": "1.0.1",
-    "lodash": "4.17.11"
+    "jsonschema": "1.0.1"
   },
   "devDependencies": {
-    "mocha": "6.0.2"
+    "jest": "^26.6.3"
   }
 }
