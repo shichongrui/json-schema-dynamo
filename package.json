@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "jsonschema": "1.0.1",
-    "lodash": "3.6.0"
+    "lodash": "4.17.11"
   },
   "devDependencies": {
-    "mocha": "2.2.4"
+    "mocha": "6.0.2"
   }
 }
